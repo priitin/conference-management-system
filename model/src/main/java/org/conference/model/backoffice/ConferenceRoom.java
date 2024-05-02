@@ -1,8 +1,8 @@
 package org.conference.model.backoffice;
 
 import org.apache.commons.lang3.StringUtils;
-import org.conference.model.common.Contract;
-import org.conference.model.common.ContractException;
+import org.conference.model.common.Result;
+import org.conference.model.common.ResultOf;
 
 public class ConferenceRoom {
     private int id;
@@ -11,17 +11,23 @@ public class ConferenceRoom {
     private String location;
     private int maxCapacity;
 
-    public ConferenceRoom(int id, String name, ConferenceRoomStatus status, String location, int maxCapacity)
-            throws ContractException
-    {
-        Contract.Requires(!StringUtils.isBlank(name), "Conference room name cannot be empty");
-        Contract.Requires(!StringUtils.isBlank(location), "Conference room location cannot be empty");
-        Contract.Requires(maxCapacity > 0, "Conference room's maximum capacity has to be a positive integer");
-
+    private ConferenceRoom(int id, String name, ConferenceRoomStatus status, String location, int maxCapacity) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.location = location;
         this.maxCapacity = maxCapacity;
+    }
+
+    public static ResultOf<ConferenceRoom> create(int id, String name, ConferenceRoomStatus status, String location,
+                                                  int maxCapacity) {
+        if (StringUtils.isBlank(name))
+            return Result.failure("Conference room name cannot be empty");
+        if (StringUtils.isBlank(location))
+            return Result.failure("Conference room location cannot be empty");
+        if (maxCapacity <= 0)
+            return Result.failure("Conference room's maximum capacity has to be a positive integer");
+
+        return Result.succeed(new ConferenceRoom(id, name, status, location, maxCapacity));
     }
 }
