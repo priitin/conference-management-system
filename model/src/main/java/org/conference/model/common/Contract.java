@@ -9,12 +9,12 @@ package org.conference.model.common;
  */
 public class Contract {
 
-    public static void Requires(boolean precondition) throws ContractException {
+    public static void requires(boolean precondition) throws ContractException {
         if (!precondition)
             throw new ContractException();
     }
 
-    public static void Requires(boolean precondition, String message) throws ContractException {
+    public static void requires(boolean precondition, String message) throws ContractException {
         if (!precondition)
             throw new ContractException(message);
     }

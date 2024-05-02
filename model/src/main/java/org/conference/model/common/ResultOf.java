@@ -16,7 +16,7 @@ public class ResultOf<T> extends Result {
     @SneakyThrows
     public T getValue() {
         var asd = this.getClass();
-        Contract.Requires(this.isSuccess(),
+        Contract.requires(this.isSuccess(),
                 "Cannot get the value from %s with failed result: %s".formatted(
                         this.getClass().getSimpleName(), this.getErrorMessage()));
 
