@@ -1,12 +1,15 @@
 package org.conference.model.backoffice;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 
 public class ConferenceRoom {
     private int id;
+    @Getter
     private String name;
+    @Getter
     private ConferenceRoomStatus status;
     private String location;
     private int maxCapacity;
