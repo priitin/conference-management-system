@@ -1,16 +1,17 @@
 package org.conference.model.backoffice;
 
+import org.conference.model.common.ConferenceDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.ZonedDateTime;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 public class ConferenceTests {
 
     @Test
     public void creating_a_valid_conference_should_succeed() {
-        var start = ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZonedDateTime.now().getZone());
-        var end = ZonedDateTime.of(2024, 1, 1, 14, 0, 0, 0, ZonedDateTime.now().getZone());
+        var start = ConferenceDateTime.parse("2024-01-01T12:00");
+        var end = ConferenceDateTime.parse("2024-01-01T14:00");
         var room = ConferenceRoom.create(1, "TestRoom", ConferenceRoomStatus.READY, "Location", 10).getValue();
 
         var conferenceResult = Conference.create(1, start, end, room);
@@ -18,10 +19,14 @@ public class ConferenceTests {
         Assertions.assertTrue(conferenceResult.isSuccess());
     }
 
-    @Test
-    public void conference_start_time_should_be_before_its_end_time() {
-        var start = ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZonedDateTime.now().getZone());
-        var end = ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZonedDateTime.now().getZone());
+    @ParameterizedTest
+    @CsvSource({
+            "2024-01-01T12:01,2024-01-01T12:00",
+            "2024-01-01T12:00,2024-01-01T12:00",
+    })
+    public void conference_start_time_should_be_before_its_end_time(String startStr, String endStr) {
+        var start = ConferenceDateTime.parse(startStr);
+        var end = ConferenceDateTime.parse(endStr);
         var room = ConferenceRoom.create(1, "TestRoom", ConferenceRoomStatus.READY, "Location", 10).getValue();
 
         var conferenceResult = Conference.create(1, start, end, room);
@@ -32,8 +37,8 @@ public class ConferenceTests {
 
     @Test
     public void creating_a_conference_for_a_room_that_is_under_construction_should_fail() {
-        var start = ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZonedDateTime.now().getZone());
-        var end = ZonedDateTime.of(2024, 1, 1, 14, 0, 0, 0, ZonedDateTime.now().getZone());
+        var start = ConferenceDateTime.parse("2024-01-01T12:00");
+        var end = ConferenceDateTime.parse("2024-01-01T14:00");
         var room = ConferenceRoom.create(1, "TestRoom", ConferenceRoomStatus.UNDER_CONSTRUCTION, "Location", 10).getValue();
 
         var conferenceResult = Conference.create(1, start, end, room);
