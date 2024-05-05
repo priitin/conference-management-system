@@ -33,6 +33,10 @@ public class ConferenceTimeRange {
         return result.getValue();
     }
 
+    public boolean intersects(ConferenceTimeRange other) {
+        return this.start.isBeforeOrEqual(other.end) && this.end.isAfterOrEqual(other.start);
+    }
+
     @Override
     public String toString() {
         return "%s - %s".formatted(this.start, this.end);

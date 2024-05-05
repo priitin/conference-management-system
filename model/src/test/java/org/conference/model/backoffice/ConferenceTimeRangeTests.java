@@ -31,4 +31,37 @@ public class ConferenceTimeRangeTests {
         Assertions.assertTrue(timeRangeResult.isFailure());
         Assertions.assertEquals("Conference start time has to be before its end time", timeRangeResult.getErrorMessage());
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2024-01-01T11:00,2024-01-01T12:00",
+            "2024-01-01T11:00,2024-01-01T12:01",
+            "2024-01-01T13:59,2024-01-01T15:00",
+            "2024-01-01T14:00,2024-01-01T15:00",
+
+            "2024-01-01T11:59,2024-01-01T14:01",
+            "2024-01-01T12:01,2024-01-01T13:59",
+    })
+    public void two_ranges_should_intersect_if_their_times_match(String startStr, String endStr) {
+        var first = ConferenceTimeRange.parse("2024-01-01T12:00", "2024-01-01T14:00");
+        var second = ConferenceTimeRange.parse(startStr, endStr);
+
+        var areIntersecting = first.intersects(second);
+
+        Assertions.assertTrue(areIntersecting);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2024-01-01T11:00,2024-01-01T11:59",
+            "2024-01-01T14:01,2024-01-01T15:00",
+    })
+    public void two_ranges_should_not_intersect_if_their_times_do_not_match(String startStr, String endStr) {
+        var first = ConferenceTimeRange.parse("2024-01-01T12:00", "2024-01-01T14:00");
+        var second = ConferenceTimeRange.parse(startStr, endStr);
+
+        var areIntersecting = first.intersects(second);
+
+        Assertions.assertFalse(areIntersecting);
+    }
 }
