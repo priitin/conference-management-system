@@ -27,7 +27,7 @@ public class BackOffice {
         this.conferences = new ArrayList<>(conferences);
     }
 
-    public Result AddConference(Conference conference) {
+    public Result addConference(Conference conference) {
         for (var existingConference : this.conferences) {
             if (conference.getStart().isBeforeOrEqual(existingConference.getEnd())
                     && conference.getEnd().isAfterOrEqual(existingConference.getStart())) {
@@ -40,7 +40,7 @@ public class BackOffice {
         return Result.succeed();
     }
 
-    public Result UpdateConference(Conference conference) {
+    public Result updateConference(Conference conference) {
         var conferenceToUpdate = this.getConference(conference.getId());
 
         var existingConferences = this.conferences.stream()

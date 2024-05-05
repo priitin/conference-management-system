@@ -16,7 +16,7 @@ public class BackOfficeTests {
         var conference = Conference.create(1, start, end, room).getValue();
         var backOffice = new BackOffice();
 
-        var result = backOffice.AddConference(conference);
+        var result = backOffice.addConference(conference);
 
         Assertions.assertTrue(result.isSuccess());
         Assertions.assertEquals(1, backOffice.getConferences().size());
@@ -44,7 +44,7 @@ public class BackOfficeTests {
                 ConferenceRoom.create(2, "TestRoom2", ConferenceRoomStatus.READY, "Location", 10).getValue()
         ).getValue();
 
-        var result = backOffice.AddConference(conference);
+        var result = backOffice.addConference(conference);
 
         Assertions.assertTrue(result.isFailure());
         Assertions.assertTrue(result.getErrorMessage().startsWith("There is already a conference between"));
@@ -71,15 +71,15 @@ public class BackOfficeTests {
                 ConferenceRoom.create(1, "TestRoom1", ConferenceRoomStatus.READY, "Location", 10).getValue()
         ).getValue();
         var backOffice = new BackOffice();
-        backOffice.AddConference(existingConference);
-        backOffice.AddConference(conferenceToUpdate);
+        backOffice.addConference(existingConference);
+        backOffice.addConference(conferenceToUpdate);
 
         var conference = Conference.create(conferenceToUpdate.getId(),
                 ConferenceDateTime.parse(start),
                 ConferenceDateTime.parse(end),
                 conferenceToUpdate.getRoom()
         ).getValue();
-        var result = backOffice.UpdateConference(conference);
+        var result = backOffice.updateConference(conference);
 
         Assertions.assertTrue(result.isFailure());
         Assertions.assertTrue(result.getErrorMessage().startsWith("There is already a conference between"));
