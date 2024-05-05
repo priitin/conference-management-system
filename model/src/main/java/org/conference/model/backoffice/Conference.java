@@ -62,4 +62,9 @@ public class Conference {
     public Conference copy() {
         return new Conference(this.id, this.start, this.end, this.room, this.participants);
     }
+
+    @Override
+    public String toString() {
+        return "%s: %s - %s".formatted(this.room.getName(), this.start, this.end);
+    }
 }
