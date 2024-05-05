@@ -60,11 +60,9 @@ public class BackOffice {
     public Result hasConflicts(Conference conference) {
         var existingConferences = this.conferences.stream().filter(x -> conference.getId() != x.getId());
         var withSameRoom = existingConferences.filter(x -> conference.getRoom().getId() == x.getRoom().getId());
-        var withSameTimeRange = withSameRoom
-                .filter(x -> conference.getStart().isBeforeOrEqual(x.getEnd()))
-                .filter(x -> conference.getEnd().isAfterOrEqual(x.getStart()));
+        var withIntersectingTimeRange = withSameRoom.filter(x -> conference.getTimeRange().intersects(x.getTimeRange()));
 
-        var optionalConflictingConference = withSameTimeRange.findFirst();
+        var optionalConflictingConference = withIntersectingTimeRange.findFirst();
         if (optionalConflictingConference.isPresent()) {
             var conflicting = optionalConflictingConference.get();
             return Result.fail("There is already a conference in the room %s between %s".formatted(
