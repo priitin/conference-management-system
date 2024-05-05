@@ -49,4 +49,39 @@ public class BackOfficeTests {
         Assertions.assertTrue(result.isFailure());
         Assertions.assertTrue(result.getErrorMessage().startsWith("There is already a conference between"));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2024-01-01T12:01,2024-01-01T13:59",
+            "2024-01-01T10:00,2024-01-01T12:00",
+            "2024-01-01T10:00,2024-01-01T12:01",
+            "2024-01-01T14:00,2024-01-01T16:00",
+            "2024-01-01T13:59,2024-01-01T16:00",
+    })
+    public void updating_a_conference_with_a_start_and_end_time_that_conflicts_with_existing_conferences_should_fail(
+            String start, String end) {
+        var existingConference = Conference.create(1,
+                ConferenceDateTime.parse("2024-01-01T12:00"),
+                ConferenceDateTime.parse("2024-01-01T14:00"),
+                ConferenceRoom.create(1, "TestRoom1", ConferenceRoomStatus.READY, "Location", 10).getValue()
+        ).getValue();
+        var conferenceToUpdate = Conference.create(2,
+                ConferenceDateTime.parse("2024-01-01T08:00"),
+                ConferenceDateTime.parse("2024-01-01T09:00"),
+                ConferenceRoom.create(1, "TestRoom1", ConferenceRoomStatus.READY, "Location", 10).getValue()
+        ).getValue();
+        var backOffice = new BackOffice();
+        backOffice.AddConference(existingConference);
+        backOffice.AddConference(conferenceToUpdate);
+
+        var conference = Conference.create(conferenceToUpdate.getId(),
+                ConferenceDateTime.parse(start),
+                ConferenceDateTime.parse(end),
+                conferenceToUpdate.getRoom()
+        ).getValue();
+        var result = backOffice.UpdateConference(conference);
+
+        Assertions.assertTrue(result.isFailure());
+        Assertions.assertTrue(result.getErrorMessage().startsWith("There is already a conference between"));
+    }
 }
