@@ -67,9 +67,8 @@ public class BackOffice {
         var optionalConflictingConference = withSameTimeRange.findFirst();
         if (optionalConflictingConference.isPresent()) {
             var conflicting = optionalConflictingConference.get();
-            return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
-                    conflicting.getRoom().getName(),
-                    conflicting.getStart().toString(), conflicting.getEnd().toString()));
+            return Result.fail("There is already a conference in the room %s between %s".formatted(
+                    conflicting.getRoom().getName(), conflicting.getTimeRange()));
         } else {
             return Result.succeed();
         }
