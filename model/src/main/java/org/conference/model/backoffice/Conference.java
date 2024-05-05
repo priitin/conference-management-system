@@ -1,8 +1,6 @@
 package org.conference.model.backoffice;
 
 import lombok.Getter;
-import org.conference.model.common.ConferenceDateTime;
-import org.conference.model.common.ConferenceTimeRange;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 

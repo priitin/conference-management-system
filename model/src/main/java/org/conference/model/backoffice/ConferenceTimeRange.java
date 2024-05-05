@@ -1,7 +1,10 @@
-package org.conference.model.common;
+package org.conference.model.backoffice;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.conference.model.common.Contract;
+import org.conference.model.common.Result;
+import org.conference.model.common.ResultOf;
 
 @Getter
 public class ConferenceTimeRange {

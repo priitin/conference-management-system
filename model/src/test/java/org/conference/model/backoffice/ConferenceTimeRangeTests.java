@@ -1,7 +1,5 @@
 package org.conference.model.backoffice;
 
-import org.conference.model.common.ConferenceDateTime;
-import org.conference.model.common.ConferenceTimeRange;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

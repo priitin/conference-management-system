@@ -1,6 +1,5 @@
 package org.conference.model.backoffice;
 
-import org.conference.model.common.ConferenceDateTime;
 import org.conference.model.common.ContractException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;

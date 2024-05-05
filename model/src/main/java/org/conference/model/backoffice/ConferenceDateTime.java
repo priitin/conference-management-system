@@ -1,7 +1,8 @@
-package org.conference.model.common;
+package org.conference.model.backoffice;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.conference.model.common.ContractException;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
