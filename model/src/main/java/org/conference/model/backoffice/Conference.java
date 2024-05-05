@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Conference {
     @Getter
-    private int id;
+    private final int id;
     @Getter
     private ConferenceDateTime start;
     @Getter
@@ -54,5 +54,12 @@ public class Conference {
 
         this.room = room;
         return Result.succeed();
+    }
+
+    /**
+     * @return a new {@code Conference} with all its values copied.
+     */
+    public Conference copy() {
+        return new Conference(this.id, this.start, this.end, this.room, this.participants);
     }
 }

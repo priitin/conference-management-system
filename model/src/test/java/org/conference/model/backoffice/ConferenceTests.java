@@ -46,4 +46,21 @@ public class ConferenceTests {
         Assertions.assertTrue(conferenceResult.isFailure());
         Assertions.assertEquals("Conference room 'TestRoom' is under construction", conferenceResult.getErrorMessage());
     }
+
+    @Test
+    public void copying_a_conference_should_not_reference_its_original() {
+        var start = ConferenceDateTime.parse("2024-01-01T12:00");
+        var end = ConferenceDateTime.parse("2024-01-01T14:00");
+        var room = ConferenceRoom.create(1, "TestRoom", ConferenceRoomStatus.READY, "Location", 10).getValue();
+        var original = Conference.create(1, start, end, room).getValue();
+
+        var copy = original.copy();
+        copy.changeTime(ConferenceDateTime.parse("2024-01-01T15:00"), ConferenceDateTime.parse("2024-01-01T16:00"));
+
+        Assertions.assertNotSame(copy, original);
+        Assertions.assertEquals(original.getStart().toString(), "2024-01-01T12:00+00:00");
+        Assertions.assertEquals(original.getEnd().toString(), "2024-01-01T14:00+00:00");
+        Assertions.assertEquals(copy.getStart().toString(), "2024-01-01T15:00+00:00");
+        Assertions.assertEquals(copy.getEnd().toString(), "2024-01-01T16:00+00:00");
+    }
 }
