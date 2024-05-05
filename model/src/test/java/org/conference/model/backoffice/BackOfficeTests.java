@@ -22,6 +22,31 @@ public class BackOfficeTests {
     }
 
     @Test
+    public void updating_an_existing_conference_should_update_its_data() {
+        var existingConference = Conference.create(1,
+                ConferenceDateTime.parse("2024-01-01T12:00"),
+                ConferenceDateTime.parse("2024-01-01T14:00"),
+                ConferenceRoom.create(1, "TestRoom1", ConferenceRoomStatus.READY, "Location", 10).getValue()
+        ).getValue();
+        var backOffice = new BackOffice(existingConference);
+
+        var conference = Conference.create(
+                existingConference.getId(),
+                existingConference.getStart(),
+                existingConference.getEnd(),
+                existingConference.getRoom()
+        ).getValue();
+        conference.changeTime(
+                ConferenceDateTime.parse("2024-01-01T10:00"),
+                ConferenceDateTime.parse("2024-01-01T18:00"));
+        backOffice.updateConference(conference);
+
+        Assertions.assertEquals(1, backOffice.getConferences().size());
+        Assertions.assertEquals("2024-01-01T10:00+00:00", backOffice.getConferences().getFirst().getStart().toString());
+        Assertions.assertEquals("2024-01-01T18:00+00:00", backOffice.getConferences().getFirst().getEnd().toString());
+    }
+
+    @Test
     public void adding_a_conference_with_same_time_as_existing_but_different_room_should_succeed() {
         var existingConference = Conference.create(1,
                 ConferenceDateTime.parse("2024-01-01T12:00"),
