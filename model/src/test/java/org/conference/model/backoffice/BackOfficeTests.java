@@ -30,12 +30,7 @@ public class BackOfficeTests {
         ).getValue();
         var backOffice = new BackOffice(existingConference);
 
-        var conference = Conference.create(
-                existingConference.getId(),
-                existingConference.getStart(),
-                existingConference.getEnd(),
-                existingConference.getRoom()
-        ).getValue();
+        var conference = existingConference.copy();
         conference.changeTime(
                 ConferenceDateTime.parse("2024-01-01T10:00"),
                 ConferenceDateTime.parse("2024-01-01T18:00"));
@@ -115,11 +110,8 @@ public class BackOfficeTests {
         ).getValue();
         var backOffice = new BackOffice(existingConference, conferenceToUpdate);
 
-        var conference = Conference.create(conferenceToUpdate.getId(),
-                ConferenceDateTime.parse(start),
-                ConferenceDateTime.parse(end),
-                conferenceToUpdate.getRoom()
-        ).getValue();
+        var conference = conferenceToUpdate.copy();
+        conference.changeTime(ConferenceDateTime.parse(start), ConferenceDateTime.parse(end));
         var result = backOffice.hasConflicts(conference);
 
         Assertions.assertTrue(result.isFailure());
