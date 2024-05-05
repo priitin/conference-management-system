@@ -6,6 +6,7 @@ import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 
 public class ConferenceRoom {
+    @Getter
     private int id;
     @Getter
     private String name;

@@ -29,9 +29,11 @@ public class BackOffice {
 
     public Result addConference(Conference conference) {
         for (var existingConference : this.conferences) {
-            if (conference.getStart().isBeforeOrEqual(existingConference.getEnd())
+            if (conference.getRoom().getId() == existingConference.getRoom().getId()
+                    && conference.getStart().isBeforeOrEqual(existingConference.getEnd())
                     && conference.getEnd().isAfterOrEqual(existingConference.getStart())) {
-                return Result.fail("There is already a conference between %s - %s".formatted(
+                return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
+                        existingConference.getRoom().getName(),
                         existingConference.getStart().toString(), existingConference.getEnd().toString()));
             }
         }
@@ -47,9 +49,11 @@ public class BackOffice {
                 .filter(x -> x.getId() != conferenceToUpdate.getId())
                 .toList();
         for (var existingConference : existingConferences) {
-            if (conference.getStart().isBeforeOrEqual(existingConference.getEnd())
+            if (conference.getRoom().getId() == existingConference.getRoom().getId()
+                    && conference.getStart().isBeforeOrEqual(existingConference.getEnd())
                     && conference.getEnd().isAfterOrEqual(existingConference.getStart())) {
-                return Result.fail("There is already a conference between %s - %s".formatted(
+                return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
+                        existingConference.getRoom().getName(),
                         existingConference.getStart().toString(), existingConference.getEnd().toString()));
             }
         }
