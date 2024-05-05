@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class BackOffice {
     @Getter
-    private ArrayList<Conference> conferences;
+    private final ArrayList<Conference> conferences;
 
     public BackOffice() {
         this.conferences = new ArrayList<>();
@@ -46,21 +46,22 @@ public class BackOffice {
      * Checks if {@code conference} has conflicts with any existing conferences.
      */
     public Result hasConflicts(Conference conference) {
-        var existingConferences = this.conferences.stream()
-                .filter(x -> x.getId() != conference.getId())
-                .toList();
+        var existingConferences = this.conferences.stream().filter(x -> conference.getId() != x.getId());
+        var withSameRoom = existingConferences.filter(x -> conference.getRoom().getId() == x.getRoom().getId());
+        var withSameTimeRange = withSameRoom
+                .filter(x -> conference.getStart().isBeforeOrEqual(x.getEnd()))
+                .filter(x -> conference.getEnd().isAfterOrEqual(x.getStart()));
 
-        for (var existingConference : existingConferences) {
-            if (conference.getRoom().getId() == existingConference.getRoom().getId()
-                    && conference.getStart().isBeforeOrEqual(existingConference.getEnd())
-                    && conference.getEnd().isAfterOrEqual(existingConference.getStart())) {
-                return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
-                        existingConference.getRoom().getName(),
-                        existingConference.getStart().toString(), existingConference.getEnd().toString()));
-            }
+        var optionalConflictingConference = withSameTimeRange.findFirst();
+        if (optionalConflictingConference.isPresent()) {
+            var conflicting = optionalConflictingConference.get();
+            return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
+                    conflicting.getRoom().getName(),
+                    conflicting.getStart().toString(), conflicting.getEnd().toString()));
         }
-
-        return Result.succeed();
+        else {
+            return Result.succeed();
+        }
     }
 
     @SneakyThrows
