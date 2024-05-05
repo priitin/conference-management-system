@@ -6,6 +6,7 @@ import org.conference.model.common.Contract;
 import org.conference.model.common.Result;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -21,6 +22,10 @@ public class BackOffice {
         this.conferences = new ArrayList<>() {{
             add(conference);
         }};
+    }
+
+    public BackOffice(Conference ... conferences) {
+        this.conferences = new ArrayList<>(Arrays.stream(conferences).toList());
     }
 
     public BackOffice(Collection<Conference> conferences) {

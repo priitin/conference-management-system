@@ -113,9 +113,7 @@ public class BackOfficeTests {
                 ConferenceDateTime.parse("2024-01-01T09:00"),
                 ConferenceRoom.create(1, "TestRoom1", ConferenceRoomStatus.READY, "Location", 10).getValue()
         ).getValue();
-        var backOffice = new BackOffice();
-        backOffice.addConference(existingConference);
-        backOffice.addConference(conferenceToUpdate);
+        var backOffice = new BackOffice(existingConference, conferenceToUpdate);
 
         var conference = Conference.create(conferenceToUpdate.getId(),
                 ConferenceDateTime.parse(start),
