@@ -27,27 +27,31 @@ public class BackOffice {
         this.conferences = new ArrayList<>(conferences);
     }
 
-    public Result addConference(Conference conference) {
-        for (var existingConference : this.conferences) {
-            if (conference.getRoom().getId() == existingConference.getRoom().getId()
-                    && conference.getStart().isBeforeOrEqual(existingConference.getEnd())
-                    && conference.getEnd().isAfterOrEqual(existingConference.getStart())) {
-                return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
-                        existingConference.getRoom().getName(),
-                        existingConference.getStart().toString(), existingConference.getEnd().toString()));
-            }
-        }
+    @SneakyThrows
+    public void addConference(Conference conference) {
+        Result conflicts = this.hasConflicts(conference);
+        Contract.requires(conflicts.isSuccess(), conflicts.getErrorMessage());
 
         this.conferences.add(conference);
-        return Result.succeed();
     }
 
-    public Result updateConference(Conference conference) {
-        var conferenceToUpdate = this.getConference(conference.getId());
+    @SneakyThrows
+    public void updateConference(Conference conference) {
+        Result conflicts = this.hasConflicts(conference);
+        Contract.requires(conflicts.isSuccess(), conflicts.getErrorMessage());
 
+        var conferenceToUpdate = this.getConference(conference.getId());
+        this.replaceConference(conferenceToUpdate, conference);
+    }
+
+    /**
+     * Checks if {@code conference} has conflicts with any existing conferences.
+     */
+    public Result hasConflicts(Conference conference) {
         var existingConferences = this.conferences.stream()
-                .filter(x -> x.getId() != conferenceToUpdate.getId())
+                .filter(x -> x.getId() != conference.getId())
                 .toList();
+
         for (var existingConference : existingConferences) {
             if (conference.getRoom().getId() == existingConference.getRoom().getId()
                     && conference.getStart().isBeforeOrEqual(existingConference.getEnd())
@@ -58,7 +62,6 @@ public class BackOffice {
             }
         }
 
-        this.replaceConference(conferenceToUpdate, conference);
         return Result.succeed();
     }
 
