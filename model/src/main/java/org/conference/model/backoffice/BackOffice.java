@@ -58,9 +58,9 @@ public class BackOffice {
      * Checks if {@code conference} has conflicts with any existing conferences.
      */
     public Result hasConflicts(Conference conference) {
-        var existingConferences = this.conferences.stream().filter(x -> conference.getId() != x.getId());
-        var withSameRoom = existingConferences.filter(x -> conference.getRoom().getId() == x.getRoom().getId());
-        var withIntersectingTimeRange = withSameRoom.filter(x -> conference.getTimeRange().intersects(x.getTimeRange()));
+        var existingConferences = this.conferences.stream().filter(x -> x.getId() != conference.getId());
+        var withSameRoom = existingConferences.filter(x -> x.getRoom().getId() == conference.getRoom().getId());
+        var withIntersectingTimeRange = withSameRoom.filter(x -> x.getTimeRange().intersects(conference.getTimeRange()));
 
         var optionalConflictingConference = withIntersectingTimeRange.findFirst();
         if (optionalConflictingConference.isPresent()) {
