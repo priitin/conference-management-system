@@ -6,7 +6,6 @@ import org.conference.model.common.Contract;
 import org.conference.model.common.Result;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -24,12 +23,20 @@ public class BackOffice {
         }};
     }
 
-    public BackOffice(Conference ... conferences) {
-        this.conferences = new ArrayList<>(Arrays.stream(conferences).toList());
+    public BackOffice(Conference... conferences) {
+        this.conferences = new ArrayList<>();
+
+        for (var conf : conferences) {
+            this.addConference(conf);
+        }
     }
 
     public BackOffice(Collection<Conference> conferences) {
-        this.conferences = new ArrayList<>(conferences);
+        this.conferences = new ArrayList<>();
+
+        for (var conf : conferences) {
+            this.addConference(conf);
+        }
     }
 
     @SneakyThrows
@@ -63,8 +70,7 @@ public class BackOffice {
             return Result.fail("There is already a conference in the room %s between %s - %s".formatted(
                     conflicting.getRoom().getName(),
                     conflicting.getStart().toString(), conflicting.getEnd().toString()));
-        }
-        else {
+        } else {
             return Result.succeed();
         }
     }
