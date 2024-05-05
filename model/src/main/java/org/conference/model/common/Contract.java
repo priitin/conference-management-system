@@ -9,13 +9,27 @@ package org.conference.model.common;
  */
 public class Contract {
 
+    /**
+     * @throws ContractException if the precondition fails.
+     */
     public static void requires(boolean precondition) throws ContractException {
         if (!precondition)
             throw new ContractException();
     }
 
+    /**
+     * @throws ContractException if the precondition fails.
+     */
     public static void requires(boolean precondition, String message) throws ContractException {
         if (!precondition)
             throw new ContractException(message);
+    }
+
+    /**
+     * @throws ContractException if the result fails.
+     */
+    public static void requiresSuccess(Result result) throws ContractException {
+        if (result.isFailure())
+            throw new ContractException(result.getErrorMessage());
     }
 }

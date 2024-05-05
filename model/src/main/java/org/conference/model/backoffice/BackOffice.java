@@ -29,16 +29,14 @@ public class BackOffice {
 
     @SneakyThrows
     public void addConference(Conference conference) {
-        Result conflicts = this.hasConflicts(conference);
-        Contract.requires(conflicts.isSuccess(), conflicts.getErrorMessage());
+        Contract.requiresSuccess(this.hasConflicts(conference));
 
         this.conferences.add(conference);
     }
 
     @SneakyThrows
     public void updateConference(Conference conference) {
-        Result conflicts = this.hasConflicts(conference);
-        Contract.requires(conflicts.isSuccess(), conflicts.getErrorMessage());
+        Contract.requiresSuccess(this.hasConflicts(conference));
 
         var conferenceToUpdate = this.getConference(conference.getId());
         this.replaceConference(conferenceToUpdate, conference);
