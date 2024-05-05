@@ -57,8 +57,16 @@ public class ConferenceDateTime {
         return this.value.isBefore(other.getValue());
     }
 
+    public boolean isBeforeOrEqual(ConferenceDateTime other) {
+        return this.isBefore(other) || this.isEqual(other);
+    }
+
     public boolean isAfter(ConferenceDateTime other) {
         return this.value.isAfter(other.getValue());
+    }
+
+    public boolean isAfterOrEqual(ConferenceDateTime other) {
+        return this.isAfter(other) || this.isEqual(other);
     }
 
     /**

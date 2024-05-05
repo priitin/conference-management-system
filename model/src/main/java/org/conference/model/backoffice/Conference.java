@@ -1,5 +1,6 @@
 package org.conference.model.backoffice;
 
+import lombok.Getter;
 import org.conference.model.common.ConferenceDateTime;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
@@ -8,7 +9,9 @@ import java.util.ArrayList;
 
 public class Conference {
     private int id;
+    @Getter
     private ConferenceDateTime start;
+    @Getter
     private ConferenceDateTime end;
     private ConferenceRoom room;
     private ArrayList<Participant> participants;
