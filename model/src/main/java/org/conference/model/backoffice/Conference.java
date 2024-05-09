@@ -1,14 +1,13 @@
 package org.conference.model.backoffice;
 
 import lombok.Getter;
+import org.conference.model.common.Entity;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 
 import java.util.ArrayList;
 
-public class Conference {
-    @Getter
-    private final int id;
+public class Conference extends Entity {
     @Getter
     private ConferenceTimeRange timeRange;
     @Getter

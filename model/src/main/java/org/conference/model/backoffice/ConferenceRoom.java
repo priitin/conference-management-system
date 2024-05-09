@@ -2,12 +2,11 @@ package org.conference.model.backoffice;
 
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.conference.model.common.Entity;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 
-public class ConferenceRoom {
-    @Getter
-    private int id;
+public class ConferenceRoom extends Entity {
     @Getter
     private String name;
     @Getter

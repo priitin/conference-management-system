@@ -3,14 +3,16 @@ package org.conference.model.backoffice;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.conference.model.common.ContractException;
+import org.conference.model.common.ValueObject;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.stream.Stream;
 
-public class ConferenceDateTime {
+public class ConferenceDateTime extends ValueObject {
     @Getter
     private final OffsetDateTime value;
 
@@ -78,5 +80,10 @@ public class ConferenceDateTime {
     @Override
     public String toString() {
         return OUTPUT_FORMATTER.format(this.value);
+    }
+
+    @Override
+    protected Stream<Object> getEqualityComponents() {
+        return Stream.of(this.value);
     }
 }

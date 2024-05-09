@@ -50,16 +50,15 @@ public class BackOffice {
     public void updateConference(Conference conference) {
         Contract.requiresSuccess(this.hasConflicts(conference));
 
-        var conferenceToUpdate = this.getConference(conference.getId());
-        this.replaceConference(conferenceToUpdate, conference);
+        this.replaceConference(conference);
     }
 
     /**
      * Checks if {@code conference} has conflicts with any existing conferences.
      */
     public Result hasConflicts(Conference conference) {
-        var existingConferences = this.conferences.stream().filter(x -> x.getId() != conference.getId());
-        var withSameRoom = existingConferences.filter(x -> x.getRoom().getId() == conference.getRoom().getId());
+        var existingConferences = this.conferences.stream().filter(x -> !x.equals(conference));
+        var withSameRoom = existingConferences.filter(x -> x.getRoom().equals(conference.getRoom()));
         var withIntersectingTimeRange = withSameRoom.filter(x -> x.getTimeRange().intersects(conference.getTimeRange()));
 
         var optionalConflictingConference = withIntersectingTimeRange.findFirst();
@@ -73,19 +72,10 @@ public class BackOffice {
     }
 
     @SneakyThrows
-    private Conference getConference(int id) {
-        var conference = this.findConference(id);
-        Contract.requires(conference.isPresent(), "Could not find conference with id " + id);
+    private void replaceConference(Conference conference) {
+        var indexToReplace = this.conferences.indexOf(conference);
+        Contract.requires(indexToReplace >= 0, "Could not find conference with id " + conference.getId());
 
-        return conference.get();
-    }
-
-    private Optional<Conference> findConference(int id) {
-        return this.conferences.stream().filter(x -> x.getId() == id).findFirst();
-    }
-
-    private void replaceConference(Conference before, Conference after) {
-        var indexToReplace = this.conferences.indexOf(before);
-        this.conferences.set(indexToReplace, after);
+        this.conferences.set(indexToReplace, conference);
     }
 }

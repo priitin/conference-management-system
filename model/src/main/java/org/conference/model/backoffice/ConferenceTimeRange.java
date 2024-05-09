@@ -5,9 +5,12 @@ import lombok.SneakyThrows;
 import org.conference.model.common.Contract;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
+import org.conference.model.common.ValueObject;
+
+import java.util.stream.Stream;
 
 @Getter
-public class ConferenceTimeRange {
+public class ConferenceTimeRange extends ValueObject {
     private final ConferenceDateTime start;
     private final ConferenceDateTime end;
 
@@ -40,5 +43,10 @@ public class ConferenceTimeRange {
     @Override
     public String toString() {
         return "%s - %s".formatted(this.start, this.end);
+    }
+
+    @Override
+    protected Stream<Object> getEqualityComponents() {
+        return Stream.of(start, end);
     }
 }
