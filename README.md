@@ -19,6 +19,10 @@ Running unit tests:
 
     mvn test
 
+Running the web application:
+
+    mvn spring-boot:run
+
 ## Requirements
 
 The Conference Management System will need to contain at least 2 modules: the **Back Office Gateway** and the **Conference Gateway**.
