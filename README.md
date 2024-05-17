@@ -23,6 +23,8 @@ Running the web application:
 
     mvn spring-boot:run
 
+After the server starts up, navigate to <http://localhost:8080> to view the API documentation
+
 ## Requirements
 
 The Conference Management System will need to contain at least 2 modules: the **Back Office Gateway** and the **Conference Gateway**.
