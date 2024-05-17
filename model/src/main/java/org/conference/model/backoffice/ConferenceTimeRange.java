@@ -34,6 +34,23 @@ public class ConferenceTimeRange extends ValueObject {
         return ConferenceTimeRange.create(startTime, endTime);
     }
 
+    public static ResultOf<ConferenceTimeRange> create(CharSequence start, CharSequence end) {
+        var errors = new ArrayList<String>();
+
+        var startTime = ConferenceDateTime.tryParse(start);
+        if (startTime.isEmpty())
+            errors.add("'%s' is not a valid conference start time".formatted(start));
+
+        var endTime = ConferenceDateTime.tryParse(end);
+        if (endTime.isEmpty())
+            errors.add("'%s' is not a valid conference end time".formatted(end));
+
+        if (errors.isEmpty())
+            return ConferenceTimeRange.create(startTime.get(), endTime.get());
+        else
+            return Result.failure(String.join(", ", errors));
+    }
+
     @SneakyThrows
     public static ConferenceTimeRange parse(CharSequence start, CharSequence end) {
         var startDateTime = ConferenceDateTime.parse(start);

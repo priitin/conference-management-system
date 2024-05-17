@@ -19,6 +19,23 @@ public class ConferenceTimeRangeTests {
 
     @ParameterizedTest
     @CsvSource({
+            "a,2024-01-01T12:00,is not a valid conference start time",
+            "2024-01-01T12:00,b,is not a valid conference end time",
+            "a,b,is not a valid conference start time",
+            "a,b,is not a valid conference end time",
+            ",,is not a valid conference start time",
+            ",,is not a valid conference end time",
+    })
+    public void creating_a_time_range_from_invalid_strings_should_not_succeed(
+            String startStr, String endStr, String expectedErrorMessage) {
+        var result = ConferenceTimeRange.create(startStr, endStr);
+
+        Assertions.assertTrue(result.isFailure());
+        Assertions.assertTrue(result.getErrorMessage().contains(expectedErrorMessage));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
             "2024-01-01T12:01,2024-01-01T12:00",
             "2024-01-01T12:00,2024-01-01T12:00",
     })

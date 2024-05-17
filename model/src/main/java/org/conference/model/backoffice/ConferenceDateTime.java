@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ConferenceDateTime extends ValueObject {
@@ -38,6 +39,19 @@ public class ConferenceDateTime extends ValueObject {
         var odt = offsetDateTime;
         return new ConferenceDateTime(odt.getYear(), odt.getMonthValue(), odt.getDayOfMonth(),
                 odt.getHour(), odt.getMinute(), odt.getOffset());
+    }
+
+    public static ConferenceDateTime now() {
+        return ConferenceDateTime.of(OffsetDateTime.now());
+    }
+
+    public static Optional<ConferenceDateTime> tryParse(CharSequence value) {
+        try {
+            var time = ConferenceDateTime.parse(value);
+            return Optional.of(time);
+        } catch (Exception _) {
+            return Optional.empty();
+        }
     }
 
     @SneakyThrows
