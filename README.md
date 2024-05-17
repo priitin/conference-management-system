@@ -2,7 +2,17 @@
 
 ## Setup
 
-### Prerequisites
+### Docker
+
+If you have Docker, you can run the system using:
+
+    docker compose up
+
+After the system is running, navigate to <http://localhost:8080> to view the API documentation
+
+### Localhost
+
+#### Prerequisites
 
 If you want to build and run the application on your machine directly you need:
 
@@ -38,7 +48,7 @@ The **Back Office Gateway** should support the ability to:
     - room location (the physical address of the place where this room located)
     - room max capacity
 - Create new conferences
-  - Users should have the option to create new conferences in a selected conference room at a specified date and time. Before creating a conference, the system should also make multiple validations, for example: 
+  - Users should have the option to create new conferences in a selected conference room at a specified date and time. Before creating a conference, the system should also make multiple validations, for example:
     - is a conference room available at the specified date and time
     - is a conference room available based on status (room status could be UNDER_CONSTRUCTION)
     - etc.
