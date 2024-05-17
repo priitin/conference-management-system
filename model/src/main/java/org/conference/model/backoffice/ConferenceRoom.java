@@ -1,10 +1,10 @@
 package org.conference.model.backoffice;
 
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import org.conference.model.common.Entity;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
+import org.conference.model.common.StringUtils;
 
 @Getter
 public class ConferenceRoom extends Entity {
@@ -23,9 +23,9 @@ public class ConferenceRoom extends Entity {
 
     public static ResultOf<ConferenceRoom> create(int id, String name, ConferenceRoomStatus status, String location,
                                                   int maxCapacity) {
-        if (StringUtils.isBlank(name))
+        if (StringUtils.isNullOrBlank(name))
             return Result.ofFail("Conference room name cannot be empty");
-        if (StringUtils.isBlank(location))
+        if (StringUtils.isNullOrBlank(location))
             return Result.ofFail("Conference room location cannot be empty");
         if (maxCapacity <= 0)
             return Result.ofFail("Conference room's maximum capacity has to be a positive integer");

@@ -1,7 +1,5 @@
 package org.conference.model.common;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Represents an operation that can succeed or fail.
  */
@@ -56,7 +54,7 @@ public class Result {
     public String toString() {
         if (this.isSuccess)
             return "Result succeeded";
-        else if (StringUtils.isBlank(this.error))
+        else if (StringUtils.isNullOrBlank(this.error))
             return "Result failed: no error message";
         else
             return "Result failed: " + error;
