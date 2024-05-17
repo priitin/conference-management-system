@@ -1,8 +1,6 @@
 package org.conference.web;
 
-import org.conference.web.backoffice.BackOfficeController;
-import org.conference.web.backoffice.ConferenceRepository;
-import org.conference.web.backoffice.ConferenceRoomRepository;
+import org.conference.web.backoffice.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,13 +22,19 @@ public class BackOfficeControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
+    private ConferenceService conferenceService;
+    @MockBean
     private ConferenceRepository conferenceRepo;
+
+    @MockBean
+    private ConferenceRoomService conferenceRoomService;
     @MockBean
     private ConferenceRoomRepository conferenceRoomRepo;
 
     @Test
     public void getting_a_conference_that_doesnt_exist_should_return_error_404() throws Exception {
-        when(conferenceRepo.findById(0)).thenReturn(Optional.empty());
+        when(conferenceService.getRepository()).thenReturn(conferenceRepo);
+        when(conferenceService.getRepository().findById(0)).thenReturn(Optional.empty());
 
         this.mockMvc.perform(get("/conferences/0"))
                 .andExpect(status().isNotFound())
@@ -39,7 +43,8 @@ public class BackOfficeControllerTests {
 
     @Test
     public void getting_a_conference_room_that_doesnt_exist_should_return_error_404() throws Exception {
-        when(conferenceRoomRepo.findById(0)).thenReturn(Optional.empty());
+        when(conferenceRoomService.getRepository()).thenReturn(conferenceRoomRepo);
+        when(conferenceRoomService.getRepository().findById(0)).thenReturn(Optional.empty());
 
         this.mockMvc.perform(get("/conference-rooms/0"))
                 .andExpect(status().isNotFound())

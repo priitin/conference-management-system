@@ -15,9 +15,9 @@ import java.io.IOException;
 public class BackOfficeController {
 
     @Autowired
-    private ConferenceRoomRepository conferenceRoomRepo;
+    private ConferenceService conferenceService;
     @Autowired
-    private ConferenceRepository conferenceRepo;
+    private ConferenceRoomService conferenceRoomService;
 
     @GetMapping("/")
     public void index(HttpServletResponse response) throws IOException {
@@ -26,13 +26,13 @@ public class BackOfficeController {
 
     @GetMapping("/conferences")
     public ResponseEntity getConferences() {
-        var conferences = this.conferenceRepo.getAll();
+        var conferences = this.conferenceService.getRepository().getAll();
         return ResponseEntity.ok(conferences);
     }
 
     @GetMapping("/conferences/{id}")
     public ResponseEntity getConference(@PathVariable("id") int id) {
-        var conference = this.conferenceRepo.findById(id);
+        var conference = this.conferenceService.getRepository().findById(id);
 
         if (conference.isEmpty())
             return ResponseEntity
@@ -44,13 +44,13 @@ public class BackOfficeController {
 
     @GetMapping("/conference-rooms")
     public ResponseEntity getConferenceRooms() {
-        var rooms = this.conferenceRoomRepo.getAll();
+        var rooms = this.conferenceRoomService.getRepository().getAll();
         return ResponseEntity.ok(rooms);
     }
 
     @GetMapping("/conference-rooms/{id}")
     public ResponseEntity getConferenceRoom(@PathVariable("id") int id) {
-        var room = this.conferenceRoomRepo.findById(id);
+        var room = this.conferenceRoomService.getRepository().findById(id);
 
         if (room.isEmpty())
             return ResponseEntity
