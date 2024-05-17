@@ -21,7 +21,7 @@ public class ConferenceDao {
     @Column(name = "END_TIME", nullable = false)
     public OffsetDateTime endTime;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne
     @JoinColumn(name = "CONFERENCE_ROOM_ID")
     public ConferenceRoomDao conferenceRoom;
 
