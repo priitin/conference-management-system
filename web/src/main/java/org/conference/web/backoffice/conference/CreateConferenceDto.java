@@ -1,4 +1,4 @@
-package org.conference.web.backoffice;
+package org.conference.web.backoffice.conference;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

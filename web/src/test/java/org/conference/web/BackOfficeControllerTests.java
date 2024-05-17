@@ -1,6 +1,10 @@
 package org.conference.web;
 
 import org.conference.web.backoffice.*;
+import org.conference.web.backoffice.conference.ConferenceRepository;
+import org.conference.web.backoffice.conference.ConferenceService;
+import org.conference.web.backoffice.conferenceroom.ConferenceRoomRepository;
+import org.conference.web.backoffice.conferenceroom.ConferenceRoomService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

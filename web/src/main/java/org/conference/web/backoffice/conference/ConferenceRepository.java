@@ -1,4 +1,4 @@
-package org.conference.web.backoffice;
+package org.conference.web.backoffice.conference;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

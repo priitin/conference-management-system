@@ -1,4 +1,4 @@
-package org.conference.web.backoffice;
+package org.conference.web.backoffice.conferenceroom;
 
 import lombok.SneakyThrows;
 import org.conference.model.backoffice.ConferenceRoom;

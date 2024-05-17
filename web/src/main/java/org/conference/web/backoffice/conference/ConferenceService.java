@@ -1,7 +1,8 @@
-package org.conference.web.backoffice;
+package org.conference.web.backoffice.conference;
 
 import org.conference.model.backoffice.Conference;
 import org.conference.model.backoffice.ConferenceTimeRange;
+import org.conference.web.backoffice.conferenceroom.ConferenceRoomService;
 import org.conference.web.util.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

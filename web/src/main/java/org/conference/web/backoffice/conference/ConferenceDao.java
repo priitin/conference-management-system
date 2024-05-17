@@ -1,8 +1,9 @@
-package org.conference.web.backoffice;
+package org.conference.web.backoffice.conference;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.conference.web.backoffice.conferenceroom.ConferenceRoomDao;
 
 import java.time.OffsetDateTime;
 
