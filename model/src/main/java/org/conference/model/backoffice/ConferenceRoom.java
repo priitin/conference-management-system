@@ -24,11 +24,11 @@ public class ConferenceRoom extends Entity {
     public static ResultOf<ConferenceRoom> create(int id, String name, ConferenceRoomStatus status, String location,
                                                   int maxCapacity) {
         if (StringUtils.isBlank(name))
-            return Result.failure("Conference room name cannot be empty");
+            return Result.ofFail("Conference room name cannot be empty");
         if (StringUtils.isBlank(location))
-            return Result.failure("Conference room location cannot be empty");
+            return Result.ofFail("Conference room location cannot be empty");
         if (maxCapacity <= 0)
-            return Result.failure("Conference room's maximum capacity has to be a positive integer");
+            return Result.ofFail("Conference room's maximum capacity has to be a positive integer");
 
         return Result.succeed(new ConferenceRoom(id, name, status, location, maxCapacity));
     }

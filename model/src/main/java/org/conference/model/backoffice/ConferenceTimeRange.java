@@ -23,7 +23,7 @@ public class ConferenceTimeRange extends ValueObject {
 
     public static ResultOf<ConferenceTimeRange> create(ConferenceDateTime start, ConferenceDateTime end) {
         if (start.isAfterOrEqual(end))
-            return Result.failure("Conference start time has to be before its end time");
+            return Result.ofFail("Conference start time has to be before its end time");
 
         return Result.succeed(new ConferenceTimeRange(start, end));
     }
@@ -48,7 +48,7 @@ public class ConferenceTimeRange extends ValueObject {
         if (errors.isEmpty())
             return ConferenceTimeRange.create(startTime.get(), endTime.get());
         else
-            return Result.failure(String.join(", ", errors));
+            return Result.ofFail(String.join(", ", errors));
     }
 
     @SneakyThrows

@@ -44,11 +44,11 @@ public class Result {
         return new ResultOf<>(value, true, "");
     }
 
-    public static <T> ResultOf<T> failure() {
+    public static <T> ResultOf<T> ofFail() {
         return new ResultOf<>(null, false, "");
     }
 
-    public static <T> ResultOf<T> failure(String errorMessage) {
+    public static <T> ResultOf<T> ofFail(String errorMessage) {
         return new ResultOf<>(null, false, errorMessage);
     }
 

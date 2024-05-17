@@ -35,7 +35,7 @@ public class Conference extends Entity {
      */
     public static ResultOf<Conference> create(int id, ConferenceTimeRange timeRange, ConferenceRoom room) {
         if (room.getStatus() == ConferenceRoomStatus.UNDER_CONSTRUCTION)
-            return Result.failure("Conference room '%s' is under construction".formatted(room.getName()));
+            return Result.ofFail("Conference room '%s' is under construction".formatted(room.getName()));
 
         return Result.succeed(new Conference(id, timeRange, room, new ArrayList<>()));
     }
@@ -53,7 +53,7 @@ public class Conference extends Entity {
 
     public Result changeRoom(ConferenceRoom room) {
         if (room.getStatus() == ConferenceRoomStatus.UNDER_CONSTRUCTION)
-            return Result.failure("Conference room '%s' is under construction".formatted(room.getName()));
+            return Result.ofFail("Conference room '%s' is under construction".formatted(room.getName()));
 
         this.room = room;
         return Result.succeed();
