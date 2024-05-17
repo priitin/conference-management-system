@@ -27,7 +27,7 @@ public class BackOfficeController {
 
     @GetMapping("/")
     public void index(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/conferences");
+        response.sendRedirect("/swagger-ui/index.html");
     }
 
     @GetMapping("/conferences")

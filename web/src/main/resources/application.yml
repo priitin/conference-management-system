@@ -2,6 +2,12 @@ server:
   error:
     include-stacktrace: never
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger
+
 spring:
   h2:
     console:
