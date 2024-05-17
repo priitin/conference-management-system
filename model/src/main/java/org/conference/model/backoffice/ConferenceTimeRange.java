@@ -7,6 +7,8 @@ import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 import org.conference.model.common.ValueObject;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 @Getter
@@ -24,6 +26,12 @@ public class ConferenceTimeRange extends ValueObject {
             return Result.failure("Conference start time has to be before its end time");
 
         return Result.succeed(new ConferenceTimeRange(start, end));
+    }
+
+    public static ResultOf<ConferenceTimeRange> create(OffsetDateTime start, OffsetDateTime end) {
+        var startTime = ConferenceDateTime.of(start);
+        var endTime = ConferenceDateTime.of(end);
+        return ConferenceTimeRange.create(startTime, endTime);
     }
 
     @SneakyThrows

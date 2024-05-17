@@ -34,6 +34,12 @@ public class ConferenceDateTime extends ValueObject {
         return new ConferenceDateTime(year, month, day, hour, minute, ZoneOffset.UTC);
     }
 
+    public static ConferenceDateTime of(OffsetDateTime offsetDateTime) {
+        var odt = offsetDateTime;
+        return new ConferenceDateTime(odt.getYear(), odt.getMonthValue(), odt.getDayOfMonth(),
+                odt.getHour(), odt.getMinute(), odt.getOffset());
+    }
+
     @SneakyThrows
     public static ConferenceDateTime parse(CharSequence value) {
         try {
