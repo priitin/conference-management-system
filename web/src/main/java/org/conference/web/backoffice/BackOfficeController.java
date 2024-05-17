@@ -8,6 +8,7 @@ import org.conference.web.backoffice.conference.ConferenceService;
 import org.conference.web.backoffice.conference.CreateConferenceDto;
 import org.conference.web.backoffice.conference.UpdateConferenceDto;
 import org.conference.web.backoffice.conferenceroom.ConferenceRoomService;
+import org.conference.web.util.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,15 +58,11 @@ public class BackOfficeController {
 
         var timeRangeResult = ConferenceTimeRange.create(conferenceDto.start, conferenceDto.end);
         if (timeRangeResult.isFailure())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(timeRangeResult.getErrorMessage());
+            return ResultUtils.toResponseEntity(timeRangeResult);
 
         var conferenceResult = Conference.create(timeRangeResult.getValue(), room.get());
         if (conferenceResult.isFailure())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(conferenceResult.getErrorMessage());
+            return ResultUtils.toResponseEntity(conferenceResult);
 
         var conferences = this.conferenceService.getAll();
         var backOffice = new BackOffice(conferences);
@@ -73,9 +70,7 @@ public class BackOfficeController {
 
         var hasConflicts = backOffice.hasConflicts(conference);
         if (hasConflicts.isFailure())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(hasConflicts.getErrorMessage());
+            return ResultUtils.toResponseEntity(hasConflicts);
 
         backOffice.addConference(conference);
 
@@ -96,9 +91,7 @@ public class BackOfficeController {
 
         var timeRangeResult = ConferenceTimeRange.create(updateConferenceDto.newStart, updateConferenceDto.newEnd);
         if (timeRangeResult.isFailure())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(timeRangeResult.getErrorMessage());
+            return ResultUtils.toResponseEntity(timeRangeResult);
 
         var conference = optionalConference.get();
         conference.changeTime(timeRangeResult.getValue());
@@ -111,18 +104,14 @@ public class BackOfficeController {
 
         var changeRoomResult = conference.changeRoom(optionalRoom.get());
         if (changeRoomResult.isFailure())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(changeRoomResult.getErrorMessage());
+            return ResultUtils.toResponseEntity(changeRoomResult);
 
         var conferences = this.conferenceService.getAll();
         var backOffice = new BackOffice(conferences);
 
         var hasConflicts = backOffice.hasConflicts(conference);
         if (hasConflicts.isFailure())
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(hasConflicts.getErrorMessage());
+            return ResultUtils.toResponseEntity(hasConflicts);
 
         backOffice.updateConference(conference);
         var conferenceDao = this.conferenceService.save(conference);
