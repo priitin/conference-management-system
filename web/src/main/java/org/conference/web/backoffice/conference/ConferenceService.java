@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ConferenceService {
@@ -22,6 +23,15 @@ public class ConferenceService {
     public List<Conference> getAll() {
         var daos = this.repo.getAll();
         return daos.stream().map(ConferenceService::mapToConference).toList();
+    }
+
+    public Optional<Conference> findById(int id) {
+        var dao = this.repo.findById(id);
+        if (dao.isEmpty())
+            return Optional.empty();
+
+        var conference = ConferenceService.mapToConference(dao.get());
+        return Optional.of(conference);
     }
 
     public ConferenceDao save(Conference conference) {

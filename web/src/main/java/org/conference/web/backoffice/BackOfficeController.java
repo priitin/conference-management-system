@@ -6,6 +6,7 @@ import org.conference.model.backoffice.Conference;
 import org.conference.model.backoffice.ConferenceTimeRange;
 import org.conference.web.backoffice.conference.ConferenceService;
 import org.conference.web.backoffice.conference.CreateConferenceDto;
+import org.conference.web.backoffice.conference.UpdateConferenceDto;
 import org.conference.web.backoffice.conferenceroom.ConferenceRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,6 +79,52 @@ public class BackOfficeController {
 
         backOffice.addConference(conference);
 
+        var conferenceDao = this.conferenceService.save(conference);
+        return ResponseEntity.ok(conferenceDao);
+    }
+
+    @PutMapping("/conferences/{id}")
+    public ResponseEntity updateConference(
+            @PathVariable("id") int id,
+            @RequestBody UpdateConferenceDto updateConferenceDto
+    ) {
+        var optionalConference = this.conferenceService.findById(id);
+        if (optionalConference.isEmpty())
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Could not find a conference with id: " + id);
+
+        var timeRangeResult = ConferenceTimeRange.create(updateConferenceDto.newStart, updateConferenceDto.newEnd);
+        if (timeRangeResult.isFailure())
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(timeRangeResult.getErrorMessage());
+
+        var conference = optionalConference.get();
+        conference.changeTime(timeRangeResult.getValue());
+
+        var optionalRoom = this.conferenceRoomService.findById(updateConferenceDto.newConferenceRoomId);
+        if (optionalRoom.isEmpty())
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Could not find a conference room with id: " + updateConferenceDto.newConferenceRoomId);
+
+        var changeRoomResult = conference.changeRoom(optionalRoom.get());
+        if (changeRoomResult.isFailure())
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(changeRoomResult.getErrorMessage());
+
+        var conferences = this.conferenceService.getAll();
+        var backOffice = new BackOffice(conferences);
+
+        var hasConflicts = backOffice.hasConflicts(conference);
+        if (hasConflicts.isFailure())
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(hasConflicts.getErrorMessage());
+
+        backOffice.updateConference(conference);
         var conferenceDao = this.conferenceService.save(conference);
         return ResponseEntity.ok(conferenceDao);
     }
