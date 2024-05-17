@@ -33,8 +33,8 @@ public class BackOfficeControllerTests {
 
     @Test
     public void getting_a_conference_that_doesnt_exist_should_return_error_404() throws Exception {
-        when(conferenceService.getRepository()).thenReturn(conferenceRepo);
-        when(conferenceService.getRepository().findById(0)).thenReturn(Optional.empty());
+        when(this.conferenceService.getRepository()).thenReturn(conferenceRepo);
+        when(this.conferenceService.getRepository().findById(0)).thenReturn(Optional.empty());
 
         this.mockMvc.perform(get("/conferences/0"))
                 .andExpect(status().isNotFound())
@@ -43,8 +43,8 @@ public class BackOfficeControllerTests {
 
     @Test
     public void getting_a_conference_room_that_doesnt_exist_should_return_error_404() throws Exception {
-        when(conferenceRoomService.getRepository()).thenReturn(conferenceRoomRepo);
-        when(conferenceRoomService.getRepository().findById(0)).thenReturn(Optional.empty());
+        when(this.conferenceRoomService.getRepository()).thenReturn(conferenceRoomRepo);
+        when(this.conferenceRoomService.getRepository().findById(0)).thenReturn(Optional.empty());
 
         this.mockMvc.perform(get("/conference-rooms/0"))
                 .andExpect(status().isNotFound())
