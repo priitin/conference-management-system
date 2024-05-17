@@ -1,5 +1,9 @@
 package org.conference.web.backoffice;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.conference.model.backoffice.BackOffice;
 import org.conference.model.backoffice.Conference;
@@ -16,8 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@SuppressWarnings("rawtypes")
+@Tag(name = "back-office")
 @RestController
+@SuppressWarnings("rawtypes")
 public class BackOfficeController {
 
     @Autowired
@@ -25,17 +30,25 @@ public class BackOfficeController {
     @Autowired
     private ConferenceRoomService conferenceRoomService;
 
+    @Operation(hidden = true)
     @GetMapping("/")
     public void index(HttpServletResponse response) throws IOException {
         response.sendRedirect("/swagger-ui/index.html");
     }
 
+    @Operation(summary = "Gets all of the conferences")
+    @ApiResponse(responseCode = "200", description = "Operation succeeded")
     @GetMapping("/conferences")
     public ResponseEntity getConferences() {
         var conferences = this.conferenceService.getRepository().getAll();
         return ResponseEntity.ok(conferences);
     }
 
+    @Operation(summary = "Gets a conference by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation succeeded"),
+            @ApiResponse(responseCode = "404", description = "Resource not found")
+    })
     @GetMapping("/conferences/{id}")
     public ResponseEntity getConference(@PathVariable("id") int id) {
         var conference = this.conferenceService.getRepository().findById(id);
@@ -48,6 +61,16 @@ public class BackOfficeController {
         return ResponseEntity.ok(conference.get());
     }
 
+    @Operation(summary = "Creates a new conference",
+            description =
+                    "The start and end times have to be valid Java ISO 8601 timestamps. Conference times are " +
+                    "accurate to the minute, any precision past that will be truncated."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation succeeded"),
+            @ApiResponse(responseCode = "400", description = "Client error"),
+            @ApiResponse(responseCode = "404", description = "Resource not found")
+    })
     @PostMapping("/conferences")
     public ResponseEntity createConference(@RequestBody CreateConferenceDto conferenceDto) {
         var room = this.conferenceRoomService.findById(conferenceDto.conferenceRoomId);
@@ -78,6 +101,16 @@ public class BackOfficeController {
         return ResponseEntity.ok(conferenceDao);
     }
 
+    @Operation(summary = "Updates an existing conference",
+            description =
+                    "You can update the time and room. The start and end times have to be valid Java ISO 8601 " +
+                    "timestamps. Conference times are accurate to the minute, any precision past that will be truncated."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation succeeded"),
+            @ApiResponse(responseCode = "400", description = "Client error"),
+            @ApiResponse(responseCode = "404", description = "Resource not found")
+    })
     @PutMapping("/conferences/{id}")
     public ResponseEntity updateConference(
             @PathVariable("id") int id,
@@ -118,12 +151,19 @@ public class BackOfficeController {
         return ResponseEntity.ok(conferenceDao);
     }
 
+    @Operation(summary = "Gets all of the conference rooms")
+    @ApiResponse(responseCode = "200", description = "Operation succeeded")
     @GetMapping("/conference-rooms")
     public ResponseEntity getConferenceRooms() {
         var rooms = this.conferenceRoomService.getRepository().getAll();
         return ResponseEntity.ok(rooms);
     }
 
+    @Operation(summary = "Gets a conference room by its id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation succeeded"),
+            @ApiResponse(responseCode = "404", description = "Resource not found")
+    })
     @GetMapping("/conference-rooms/{id}")
     public ResponseEntity getConferenceRoom(@PathVariable("id") int id) {
         var room = this.conferenceRoomService.getRepository().findById(id);
