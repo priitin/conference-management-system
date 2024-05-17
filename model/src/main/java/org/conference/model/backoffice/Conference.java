@@ -40,6 +40,13 @@ public class Conference extends Entity {
         return Result.succeed(new Conference(id, timeRange, room, new ArrayList<>()));
     }
 
+    /**
+     * Create a Conference without any participants.
+     */
+    public static ResultOf<Conference> create(ConferenceTimeRange timeRange, ConferenceRoom room) {
+        return Conference.create(0, timeRange, room);
+    }
+
     public void changeTime(ConferenceTimeRange timeRange) {
         this.timeRange = timeRange;
     }

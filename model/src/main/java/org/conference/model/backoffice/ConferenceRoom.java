@@ -6,10 +6,9 @@ import org.conference.model.common.Entity;
 import org.conference.model.common.Result;
 import org.conference.model.common.ResultOf;
 
+@Getter
 public class ConferenceRoom extends Entity {
-    @Getter
     private String name;
-    @Getter
     private ConferenceRoomStatus status;
     private String location;
     private int maxCapacity;
@@ -32,5 +31,10 @@ public class ConferenceRoom extends Entity {
             return Result.failure("Conference room's maximum capacity has to be a positive integer");
 
         return Result.succeed(new ConferenceRoom(id, name, status, location, maxCapacity));
+    }
+
+    public static ResultOf<ConferenceRoom> create(String name, ConferenceRoomStatus status, String location,
+                                                  int maxCapacity) {
+        return ConferenceRoom.create(0, name, status, location, maxCapacity);
     }
 }
