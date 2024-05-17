@@ -1,0 +1,6 @@
+services:
+  conference:
+    build: .
+    container_name: web_application
+    ports:
+      - "8080:8080"
